@@ -502,7 +502,3 @@ function toObservation(step: ToolExecutionResult): ActionObservation {
 function matchesAny(value: string, patterns: string[]): boolean {
   return patterns.some((pattern) => value.includes(pattern));
 }
-
-function isToolCallAction(action: NextAction): action is Extract<NextAction, { type: "tool_call" }> {
-  return action.type === "tool_call";
-}

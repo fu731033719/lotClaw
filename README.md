@@ -1,30 +1,117 @@
 # lotClaw
 
-lotClaw 是一个面向工具调用、任务规划与执行编排的 Agent Runtime 骨架项目。
+lotClaw is a TypeScript monorepo for building an agent runtime with tool calling, model adapters, and an observation-driven execution loop.
 
-## 当前状态
+## Current Scope
 
-当前仓库已完成 Monorepo 基础结构初始化，包含：
+The repository currently includes:
 
-- `apps/api` API 服务骨架
-- `apps/web` Web 控制台骨架
-- `apps/cli` CLI 入口骨架
-- `apps/worker` 后台任务执行器骨架
-- `packages/agent-core` Agent 执行核心
-- `packages/agent-tools` 工具协议与注册中心
-- `packages/model-adapters` 模型适配层
-- `packages/shared-*` 共享类型、配置和工具函数
+- CLI entrypoint
+- agent core with plan mode and loop mode
+- tool framework with guarded filesystem tools
+- model adapters for `stub`, `openai`, `minimax`, and `qwen`
+- local tests for tools, adapters, and loop behavior
 
-## 快速开始
+## Repository Layout
+
+```text
+apps/
+  api/
+  cli/
+  web/
+  worker/
+packages/
+  agent-core/
+  agent-tools/
+  model-adapters/
+  shared-config/
+  shared-types/
+  shared-utils/
+docs/
+  architecture/
+```
+
+## Install
 
 ```bash
 npm install
-npm run dev
 ```
 
-## 下一步
+## Verification
 
-- 完成 Tool Framework 第一版
-- 接入模型 Provider
-- 实现 Agent Loop MVP
-- 打通 CLI -> Core -> Tool 调用链路
+```bash
+npm run typecheck
+npm run build
+npm run test
+```
+
+## CLI
+
+### Provider doctor
+
+Print current provider configuration without exposing the full key:
+
+```powershell
+node apps/cli/dist/apps/cli/src/index.js doctor
+```
+
+### Local chat smoke test
+
+Use the currently selected provider for a single-turn chat:
+
+```powershell
+node apps/cli/dist/apps/cli/src/index.js chat "hello"
+```
+
+### Agent loop validation
+
+Run the observation-driven multi-step example:
+
+```powershell
+node apps/cli/dist/apps/cli/src/index.js "validate loop by inspect then read readme"
+```
+
+Set `LOTCLAW_TRACE=1` to print raw runtime events:
+
+```powershell
+$env:LOTCLAW_TRACE='1'
+node apps/cli/dist/apps/cli/src/index.js "validate loop by inspect then read readme"
+```
+
+## Provider Setup
+
+### OpenAI
+
+```powershell
+$env:MODEL_PROVIDER='openai'
+$env:MODEL_NAME='gpt-5.4'
+$env:OPENAI_API_KEY='your_api_key'
+node apps/cli/dist/apps/cli/src/index.js chat "你好，请用一句话介绍你自己"
+```
+
+### MiniMax
+
+```powershell
+$env:MODEL_PROVIDER='minimax'
+$env:MINIMAX_MODEL='MiniMax-M2.5'
+$env:MINIMAX_API_KEY='your_api_key'
+$env:MINIMAX_BASE_URL='https://api.minimax.io/v1'
+node apps/cli/dist/apps/cli/src/index.js chat "你好，请用一句话介绍你自己"
+```
+
+### Qwen
+
+```powershell
+$env:MODEL_PROVIDER='qwen'
+$env:QWEN_MODEL='qwen-plus'
+$env:QWEN_API_KEY='your_api_key'
+$env:QWEN_BASE_URL='https://dashscope-intl.aliyuncs.com/compatible-mode/v1'
+node apps/cli/dist/apps/cli/src/index.js chat "你好，请用一句话介绍你自己"
+```
+
+## Notes
+
+- `stub` remains the default provider for local development.
+- `doctor` trims environment values before reporting status.
+- `chat` is the fastest way to verify provider connectivity before testing the full loop.
+- `validate loop by inspect then read readme` is the current MVP loop proof case.

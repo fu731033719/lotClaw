@@ -14,10 +14,11 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test dist/**/*.test.js",
+    "test": "node --test --experimental-test-isolation=none dist/**/*.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@lotclaw/shared-types": "file:../shared-types"
+    "@lotclaw/shared-types": "file:../shared-types",
+    "openai": "^6.33.0"
   }
 }
