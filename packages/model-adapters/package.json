@@ -1,0 +1,23 @@
+{
+  "name": "@lotclaw/model-adapters",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/model-adapters/src/index.js",
+  "types": "./dist/model-adapters/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/model-adapters/src/index.d.ts",
+      "default": "./dist/model-adapters/src/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test dist/**/*.test.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@lotclaw/shared-types": "file:../shared-types"
+  }
+}

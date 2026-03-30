@@ -1,0 +1,26 @@
+{
+  "name": "@lotclaw/agent-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/agent-core/src/index.js",
+  "types": "./dist/agent-core/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/agent-core/src/index.d.ts",
+      "default": "./dist/agent-core/src/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test dist/**/*.test.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@lotclaw/agent-tools": "file:../agent-tools",
+    "@lotclaw/model-adapters": "file:../model-adapters",
+    "@lotclaw/shared-types": "file:../shared-types",
+    "@lotclaw/shared-utils": "file:../shared-utils"
+  }
+}
